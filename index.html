@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>تحديات 100 يوم</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&family=Changa:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --main-gradient: linear-gradient(120deg, #312e81 0%, #1976d2 100%);
+            --main-color: #312e81;
+            --accent: #ffd600;
+            --glass-bg: #fff;
+            --glass-dark: #232946;
+            --drawing-gradient: linear-gradient(120deg, #fbbf24 0%, #f472b6 100%);
+            --drawing-main: #fbbf24;
+            --drawing-accent: #f472b6;
+            --drawing-bg: #fff;
+            --drawing-dark: #78350f;
+            --shadow: 0 8px 32px 0 #1a237e22, 0 1.5px 0 0 #fff1 inset;
+        }
+        body {
+            font-family: 'Cairo', 'Changa', sans-serif;
+            background: linear-gradient(120deg, #f6f8fb 0%, #e3e8f0 100%);
+            color: #232946;
+            min-height: 100vh;
+            margin: 0;
+            transition: background 0.5s, color 0.5s;
+        }
+        body.night {
+            background: linear-gradient(120deg, #181d2f 0%, #232946 100%);
+            color: #fff;
+        }
+        body.python {
+            background: linear-gradient(120deg, #312e81 0%, #1976d2 100%);
+            color: #1e293b;
+        }
+        body.python.night {
+            background: linear-gradient(120deg, #181d2f 0%, #232946 100%);
+            color: #fff;
+        }
+        body.drawing {
+            background: linear-gradient(120deg, #fbbf24 0%, #f472b6 100%);
+            color: #78350f;
+        }
+        body.drawing.night {
+            background: linear-gradient(120deg, #78350f 0%, #f472b6 100%);
+            color: #fffde7;
+        }
+        .center-wrap {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .card {
+            position: relative;
+            background: var(--glass-bg);
+            color: #232946;
+            box-shadow: var(--shadow);
+            border-radius: 28px;
+            padding: 44px 32px 36px 32px;
+            max-width: 440px;
+            width: 100%;
+            margin: 38px 0;
+            z-index: 1;
+            text-align: center;
+            transition: background 0.5s, color 0.5s, box-shadow 0.5s;
+            overflow: visible;
+        }
+        body.night .card,
+        body.python.night .card {
+            background: var(--glass-dark);
+            color: #fff;
+        }
+        body.drawing .card,
+        body.drawing.night .card {
+            background: var(--drawing-bg);
+            color: var(--drawing-dark);
+            box-shadow: 0 8px 32px 0 #fbbf2433, 0 1.5px 0 0 #fff1 inset;
+        }
+        body.drawing.night .card {
+            background: rgba(120, 53, 15, 0.92);
+            color: #fffde7;
+        }
+        .logo-anim {
+            font-size: 3.2em;
+            color: var(--main-color);
+            margin-bottom: 18px;
+            animation: logoPulse 2.7s cubic-bezier(.68,-0.55,.27,1.55) infinite alternate;
+            filter: drop-shadow(0 0 18px #2563eb66);
+            transition: color 0.5s, filter 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        @keyframes logoPulse {
+            0% { filter: drop-shadow(0 0 12px #2563eb); transform: scale(1);}
+            100% { filter: drop-shadow(0 0 32px #00c9a7); transform: scale(1.13) rotate(-7deg);}
+        }
+        body.drawing .logo-anim,
+        body.drawing.night .logo-anim {
+            color: var(--drawing-main);
+            filter: drop-shadow(0 0 18px #fbbf2488);
+            animation: logoPulseDraw 2.7s cubic-bezier(.68,-0.55,.27,1.55) infinite alternate;
+        }
+        @keyframes logoPulseDraw {
+            0% { filter: drop-shadow(0 0 12px #fbbf24); transform: scale(1);}
+            100% { filter: drop-shadow(0 0 32px #f472b6); transform: scale(1.16) rotate(8deg);}
+        }
+        h1, .challenge-title {
+            font-family: 'Changa', 'Cairo', sans-serif;
+            letter-spacing: 1px;
+        }
+        h1 {
+            font-size: 2.2em;
+            color: var(--accent);
+            margin: 0 0 12px 0;
+            font-weight: bold;
+            text-shadow: 0 2px 8px #1a237e22;
+        }
+        body.night h1,
+        body.python.night h1 {
+            color: #ffd600;
+        }
+        body.drawing h1 {
+            color: var(--drawing-main);
+            text-shadow: 0 2px 8px #fbbf2422;
+        }
+        body.drawing.night h1 {
+            color: #ffd600;
+        }
+        .motivation {
+            color: #6b7280;
+            font-size: 1.13em;
+            margin-bottom: 22px;
+        }
+        body.night .motivation,
+        body.python.night .motivation {
+            color: #fff;
+        }
+        body.drawing .motivation {
+            color: #a67c00;
+        }
+        body.drawing.night .motivation {
+            color: #fffde7;
+        }
+        .challenge-select {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+        .challenge-btn, .share-btn, .button {
+            background: var(--main-gradient);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            padding: 12px 28px;
+            font-size: 1.13em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 12px #2563eb22, 0 1px 4px #0001;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.22s, transform 0.22s, box-shadow 0.22s, color 0.22s;
+            outline: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .challenge-btn.active, .challenge-btn:focus {
+            background: linear-gradient(90deg, #1976d2 0%, #1565c0 100%);
+            color: #fff;
+            box-shadow: 0 4px 24px #1976d244, 0 1px 4px #0001;
+            transform: scale(1.06);
+        }
+        .challenge-btn:hover, .share-btn:hover, .button:hover {
+            background: linear-gradient(90deg, #00c9a7 0%, #1976d2 100%);
+            transform: scale(1.09);
+            color: #fff;
+        }
+        body.drawing .challenge-btn,
+        body.drawing .share-btn,
+        body.drawing .button {
+            background: var(--drawing-gradient);
+            color: #78350f;
+            box-shadow: 0 2px 12px #fbbf2433, 0 1px 4px #0001;
+        }
+        body.drawing .challenge-btn.active,
+        body.drawing .challenge-btn:focus,
+        body.drawing .share-btn:active,
+        body.drawing .button:active {
+            background: linear-gradient(90deg, #fbbf24 0%, #f472b6 100%);
+            color: #fff;
+            box-shadow: 0 4px 24px #fbbf2444, 0 1px 4px #0001;
+        }
+        body.drawing .challenge-btn:hover,
+        body.drawing .share-btn:hover,
+        body.drawing .button:hover {
+            background: linear-gradient(90deg, #f472b6 0%, #fbbf24 100%);
+            color: #fff;
+            transform: scale(1.09);
+        }
+        .challenge-title {
+            font-size: 1.18em;
+            color: var(--accent);
+            margin: 18px 0 7px 0;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            justify-content: center;
+        }
+        body.night .challenge-title,
+        body.python.night .challenge-title {
+            color: #ffd600;
+        }
+        body.drawing .challenge-title {
+            color: var(--drawing-main);
+        }
+        body.drawing.night .challenge-title {
+            color: #ffd600;
+        }
+        .days-left {
+            color: #38bdf8;
+            font-size: 1.1em;
+            margin-bottom: 12px;
+        }
+        body.night .days-left,
+        body.python.night .days-left {
+            color: #ffd600;
+        }
+        body.drawing .days-left,
+        body.drawing.night .days-left {
+            color: #f472b6;
+        }
+        .progress-bar-bg {
+            background: #e3e8f0;
+            border-radius: 8px;
+            height: 10px;
+            width: 100%;
+            margin: 0 auto 18px auto;
+            overflow: hidden;
+        }
+        body.night .progress-bar-bg,
+        body.python.night .progress-bar-bg {
+            background: #232946;
+        }
+        .progress-bar {
+            background: var(--main-gradient);
+            height: 100%;
+            border-radius: 8px;
+            transition: width 0.5s, background 0.5s;
+        }
+        body.drawing .progress-bar,
+        body.drawing.night .progress-bar {
+            background: linear-gradient(90deg, #fbbf24 0%, #f472b6 100%);
+        }
+        .progress-text {
+            color: #232946;
+            font-size: 1em;
+            margin-bottom: 8px;
+        }
+        body.night .progress-text,
+        body.python.night .progress-text,
+        body.drawing.night .progress-text {
+            color: #fff;
+        }
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 7px;
+            margin: 18px 0 0 0;
+            justify-items: center;
+        }
+        .day {
+            width: 32px;
+            height: 32px;
+            background: #e3e8f0;
+            color: #232946;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.08em;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+            box-shadow: 0 1px 4px #0001;
+            user-select: none;
+        }
+        body.night .day,
+        body.python.night .day {
+            background: #232946;
+            color: #fff;
+        }
+        body.drawing .day {
+            background: #fef3c7;
+            color: #78350f;
+        }
+        body.drawing.night .day {
+            background: #78350f;
+            color: #fffde7;
+        }
+        .day.today {
+            border: 2.5px solid var(--accent) !important;
+            box-shadow: 0 0 18px var(--accent), 0 0 0 4px #fff2;
+            position: relative;
+        }
+        body.night .day.today,
+        body.python.night .day.today {
+            border-color: #ffd600 !important;
+            box-shadow: 0 0 18px #ffd600, 0 0 0 4px #fff2;
+        }
+        body.drawing .day.today {
+            border-color: var(--drawing-main) !important;
+            box-shadow: 0 0 18px var(--drawing-main), 0 0 0 4px #fff2;
+        }
+        body.drawing.night .day.today {
+            border-color: #ffd600 !important;
+            box-shadow: 0 0 18px #ffd600, 0 0 0 4px #fff2;
+        }
+        .day.completed {
+            background: var(--main-gradient);
+            color: #fff;
+            box-shadow: 0 0 12px #00c9a7cc;
+        }
+        body.night .day.completed,
+        body.python.night .day.completed {
+            background: linear-gradient(135deg, #ffd600 0%, #1976d2 100%);
+            color: #232946;
+            box-shadow: 0 0 12px #ffd600cc;
+        }
+        body.drawing .day.completed,
+        body.drawing.night .day.completed {
+            background: linear-gradient(135deg, #fbbf24 0%, #f472b6 100%);
+            color: #fff;
+            box-shadow: 0 0 12px #fbbf24cc;
+        }
+        .day.completed:hover {
+            background: var(--main-gradient);
+            box-shadow: 0 0 18px #00c9a7cc;
+            transform: scale(1.13) rotate(-2deg);
+        }
+        body.night .day.completed:hover,
+        body.python.night .day.completed:hover {
+            background: linear-gradient(135deg, #ffd600 0%, #1976d2 100%);
+            color: #232946;
+            box-shadow: 0 0 18px #ffd600cc;
+        }
+        body.drawing .day.completed:hover,
+        body.drawing.night .day.completed:hover {
+            background: linear-gradient(135deg, #fbbf24 0%, #f472b6 100%);
+            box-shadow: 0 0 18px #fbbf24cc;
+        }
+        .day:hover {
+            background: #38bdf8;
+            color: #fff;
+            transform: scale(1.09);
+        }
+        body.night .day:hover,
+        body.python.night .day:hover {
+            background: #ffd600;
+            color: #232946;
+        }
+        body.drawing .day:hover,
+        body.drawing.night .day:hover {
+            background: #fbbf24;
+            color: #fff;
+        }
+        .night-btn {
+            position: absolute;
+            right: 18px;
+            top: 18px;
+            background: #f1f5f9;
+            border: none;
+            border-radius: 50%;
+            width: 38px; height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2em;
+            color: #334155;
+            box-shadow: 0 1px 4px #0001;
+            transition: background 0.2s, color 0.2s;
+            z-index: 10;
+        }
+        .night-btn:hover {
+            background: var(--main-gradient);
+            color: #fff;
+        }
+        body.night .night-btn,
+        body.python.night .night-btn {
+            background: #232946;
+            color: #fff;
+            border: 1.5px solid #fff2;
+        }
+        body.night .night-btn:hover,
+        body.python.night .night-btn:hover {
+            background: var(--main-gradient);
+            color: #fff;
+        }
+        .share-btn {
+            margin-top: 18px;
+            background: var(--main-gradient);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            padding: 12px 28px;
+            font-size: 1.13em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 12px #00c9a755;
+            transition: background 0.2s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .share-btn:hover {
+            background: linear-gradient(90deg, #3a86ff 0%, #00c9a7 100%);
+            transform: scale(1.09);
+        }
+        body.drawing .share-btn {
+            background: var(--drawing-gradient);
+            color: #78350f;
+            box-shadow: 0 2px 12px #fbbf2433, 0 1px 4px #0001;
+        }
+        body.drawing .share-btn:hover {
+            background: linear-gradient(90deg, #f472b6 0%, #fbbf24 100%);
+            color: #fff;
+        }
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #232946;
+            color: #fff;
+            padding: 16px 22px;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px #0005;
+            font-size: 1.1em;
+            z-index: 99999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s;
+        }
+        .toast.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        @media (max-width: 700px) {
+            .card { padding: 18px 4vw 18px 4vw; }
+            .toast { right: 8px; left: 8px; bottom: 8px; }
+        }
+        footer {
+            background: linear-gradient(90deg, #312e81 0%, #1976d2 100%);
+            color: #fff;
+            margin: 40px auto 0 auto;
+            max-width: 440px;
+            font-size: 1.07em;
+            padding: 18px 0 14px 0;
+            letter-spacing: 0.5px;
+            text-align: center;
+            border-radius: 18px 18px 0 0;
+            box-shadow: 0 2px 16px #1a237e22;
+            font-weight: bold;
+            transition: background 0.4s, color 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        body.drawing footer {
+            background: linear-gradient(90deg, #fbbf24 0%, #f472b6 100%);
+            color: #78350f;
+            box-shadow: 0 2px 16px #fbbf2433;
+        }
+        body.python.night footer,
+        body.night footer {
+            background: linear-gradient(90deg, #181d2f 0%, #232946 100%);
+            color: #ffd600;
+        }
+        body.drawing.night footer {
+            background: linear-gradient(90deg, #78350f 0%, #f472b6 100%);
+            color: #fffde7;
+        }
+        footer a {
+            color: #1976d2;
+            font-weight: bold;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        footer a:hover {
+            color: #fff;
+            text-shadow: 0 2px 8px #1976d2cc;
+        }
+        footer .discord {
+            color: #5865f2;
+            font-weight: bold;
+            margin-right: 4px;
+            font-size: 1.08em;
+            vertical-align: middle;
+        }
+        footer .footer-name {
+            color: #ffd600;
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-size: 1.09em;
+        }
+        body.drawing footer .footer-name {
+            color: #78350f;
+        }
+        body.drawing.night footer .footer-name {
+            color: #fffde7;
+        }
+        @keyframes confetti {
+            0% { transform: translateY(-100px) rotateZ(0deg);}
+            100% { transform: translateY(600px) rotateZ(360deg);}
+        }
+        .confetti {
+            position: fixed;
+            top: -100px;
+            left: 50vw;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            z-index: 99999;
+            opacity: 0.85;
+            pointer-events: none;
+            animation: confetti 2.2s linear forwards;
+        }
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards;
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .card, .calendar, .challenge-btn, .share-btn, .button, .day {
+            border-radius: 16px;
+        }
+        ::-webkit-scrollbar {
+            width: 9px;
+            background: #e3e8f0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1976d2cc;
+            border-radius: 8px;
+        }
+        ::selection {
+            background: #1976d2;
+            color: #fff;
+        }
+    </style>
+</head>
+<body dir="rtl" class="python">
+    <div class="center-wrap">
+      <div class="card fade-in-up">
+          <button class="night-btn" id="nightBtn" title="تبديل الوضع الليلي">
+              <i class="fa-solid fa-moon"></i>
+          </button>
+          <div class="logo-anim" id="logoAnim"><i class="fa-solid fa-fire-flame-curved"></i></div>
+          <h1 id="mainTitle">تحديات 100 يوم</h1>
+          <div class="motivation" id="motivationText">كل عادة عظيمة بدأت بيوم واحد! <span style="font-size:1.1em;">📅</span></div>
+          <div class="challenge-select">
+              <button class="challenge-btn active" id="btnPython"><i class="fa-brands fa-python"></i> تعلم البايثون</button>
+              <button class="challenge-btn" id="btnDrawing"><i class="fa-solid fa-pen"></i> تعلم الرسم</button>
+          </div>
+          <div class="challenge-title" id="challengeTitle"><i class="fa-brands fa-python"></i> تحدي تعلم البايثون</div>
+          <div class="days-left" id="daysLeft">متبقي 100 يوم</div>
+          <div class="progress-bar-bg">
+              <div class="progress-bar" id="progressBar" style="width:0%"></div>
+          </div>
+          <div class="progress-text" id="progressText">0/100 يوم مكتمل</div>
+          <div class="calendar" id="calendar"></div>
+          <button class="share-btn" onclick="shareSite()">
+              <i class="fa-solid fa-share-nodes"></i>
+              شارك الموقع وكن من الرواد!
+          </button>
+          <div class="toast" id="toast"></div>
+      </div>
+      <!-- التميمة التحفيزية -->
+      <div id="mascotBox" style="position:fixed;bottom:38px;right:38px;z-index:10003;display:flex;align-items:flex-end;gap:10px;cursor:pointer;">
+        <div id="mascotSpeech" style="background:rgba(255,255,255,0.97);color:#1a237e;border-radius:16px 16px 16px 0;box-shadow:0 2px 16px #1a237e22;padding:18px 22px;font-size:1.13em;max-width:260px;min-width:120px;transition:box-shadow 0.3s;">
+          <!-- الاقتباس هنا -->
+        </div>
+        <div id="mascotChar" style="font-size:2.7em;filter:drop-shadow(0 2px 12px #1976d2aa);transition:transform 0.3s;">
+          🦉
+        </div>
+      </div>
+      <!-- فكرة مميزة: شريط إنجاز تفاعلي أعلى الكارد -->
+      <div id="celebrateBar" style="width:100%;max-width:440px;margin:0 auto 18px auto;padding:10px 0 8px 0;border-radius:18px 18px 0 0;
+        background:linear-gradient(90deg,#312e81 0%,#1976d2 100%);color:#fff;font-size:1.13em;font-weight:bold;text-align:center;
+        box-shadow:0 2px 16px #1a237e22;display:flex;align-items:center;justify-content:center;gap:12px;position:relative;z-index:2;letter-spacing:0.5px;user-select:none;overflow:hidden;">
+        <span id="celebrateMsg">ابدأ رحلتك الآن! 🚀</span>
+        <span id="celebrateIcons"></span>
+      </div>
+      <footer>
+        جميع الحقوق محفوظة &copy; <span style="color:#1976d2;font-weight:bold;">SUFYAN</span> 2025
+        <br>
+        تواصل معي على ديسكورد:
+        <a href="https://discord.com/users/1260631014883983370" target="_blank" style="color:#5865f2; text-decoration:none; font-weight:bold;">
+          <i class="fa-brands fa-discord"></i> sufyanito
+        </a>
+      </footer>
+    </div>
+    <!-- نافذة تهنئة عند إكمال 100 يوم -->
+    <div id="congratsPopup" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(20,20,40,0.8); z-index:10000; align-items:center; justify-content:center;">
+      <div class="popup-content" style="background:#fff; color:#222; border-radius:18px; box-shadow:0 8px 32px #0007; padding:38px 30px 28px 30px; text-align:center; min-width:270px; max-width:90vw; position:relative;">
+        <span class="close-btn" onclick="closeCongrats()" style="position:absolute;top:10px;left:15px;font-size:1.5rem;color:#43a047;cursor:pointer;transition:color 0.2s;">&times;</span>
+        <h2>🎉 تهانينا!</h2>
+        <p>لقد أكملت 100 يوم من التحدي! أنت أسطورة حقيقية 👑<br>استمر في تطوير نفسك وشارك إنجازك مع أصدقائك!</p>
+      </div>
+    </div>
+    <!-- نافذة اقتراح عادة جديدة بعد التحدي -->
+    <div id="newHabitPopup" style="display:none; position:fixed; top:0;left:0;right:0;bottom:0;z-index:10001; background:rgba(30,30,50,0.92); align-items:center; justify-content:center;">
+      <div style="background:#fff; color:#222; border-radius:18px; box-shadow:0 8px 32px #0007; padding:32px 22px; text-align:center; min-width:260px; max-width:90vw; position:relative;">
+        <span style="position:absolute;top:10px;right:18px;cursor:pointer;font-size:1.3em;color:#888;" onclick="closeNewHabitPopup()">&times;</span>
+        <h2 style="color:#1976d2;margin-bottom:10px;">ابدأ عادة جديدة!</h2>
+        <p>لقد أكملت تحديك بنجاح! جرب عادة جديدة أو تحدي جديد لتواصل تطوير نفسك. 💡</p>
+        <button class="challenge-btn" onclick="window.location.reload()">ابدأ من جديد</button>
+      </div>
+    </div>
+    <!-- إحصائيات التحدي -->
+    <div id="statsPopup" style="display:none; position:fixed; top:0;left:0;right:0;bottom:0;z-index:10001; background:rgba(30,30,50,0.92); align-items:center; justify-content:center;">
+      <div style="background:#fff; color:#222; border-radius:18px; box-shadow:0 8px 32px #0007; padding:32px 22px; text-align:center; min-width:260px; max-width:90vw; position:relative;">
+        <span style="position:absolute;top:10px;right:18px;cursor:pointer;font-size:1.3em;color:#888;" onclick="closeStatsPopup()">&times;</span>
+        <h2 style="color:#1976d2;margin-bottom:10px;">إحصائيات التحدي</h2>
+        <div id="statsContent"></div>
+      </div>
+    </div>
+    <button onclick="showStatsPopup()" style="position:fixed;bottom:22px;left:22px;z-index:10002;background:#1976d2;color:#fff;border:none;border-radius:50%;width:54px;height:54px;font-size:1.5em;box-shadow:0 2px 12px #1976d255;cursor:pointer;transition:background 0.2s;">
+      <i class="fa-solid fa-chart-simple"></i>
+    </button>
+    <audio id="doneSound" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfae3c7.mp3"></audio>
+    <script>
+    // تحديات
+    const challenges = {
+        python: {
+            name: "تحدي تعلم البايثون",
+            icon: '<i class="fa-brands fa-python"></i>',
+            logo: '<i class="fa-brands fa-python"></i>',
+            motivation: "كل عادة عظيمة بدأت بيوم واحد! <span style='font-size:1.1em;'>📅</span>",
+            class: "python"
+        },
+        drawing: {
+            name: "تحدي تعلم الرسم",
+            icon: '<i class="fa-solid fa-pen"></i>',
+            logo: '<i class="fa-solid fa-paintbrush"></i>',
+            motivation: "كل رسمة عظيمة بدأت بخط واحد! <span style='font-size:1.1em;'>🎨</span>",
+            class: "drawing"
+        }
+    };
+    let currentChallenge = localStorage.getItem('currentChallenge') || 'python';
+    let nightMode = localStorage.getItem('nightMode') === 'true';
+    function setChallenge(ch) {
+        currentChallenge = ch;
+        localStorage.setItem('currentChallenge', ch);
+        // إعادة تعيين الكلاسات
+        document.body.className = '';
+        if (nightMode) document.body.classList.add('night');
+        document.body.classList.add(challenges[ch].class);
+        document.getElementById('challengeTitle').innerHTML = challenges[ch].icon + " " + challenges[ch].name;
+        // تغيير لون لوغو بايثون حسب الوضع
+        if (ch === 'python') {
+            let logoColor = nightMode ? "#ffd600" : "#1976d2";
+            document.getElementById('logoAnim').innerHTML =
+                `<i class="fa-brands fa-python" style="color:${logoColor};filter:drop-shadow(0 0 18px ${logoColor}99);"></i>`;
+        } else {
+            document.getElementById('logoAnim').innerHTML = challenges[ch].logo;
+        }
+        document.getElementById('motivationText').innerHTML = challenges[ch].motivation;
+        document.getElementById('btnPython').classList.toggle('active', ch === 'python');
+        document.getElementById('btnDrawing').classList.toggle('active', ch === 'drawing');
+        renderCalendar();
+        updateProgress();
+    }
+    function updateNightMode() {
+        nightMode = !!nightMode;
+        if (nightMode) {
+            document.body.classList.add("night");
+            document.getElementById('nightBtn').innerHTML = '<i class="fa-solid fa-sun"></i>';
+        } else {
+            document.body.classList.remove("night");
+            document.getElementById('nightBtn').innerHTML = '<i class="fa-solid fa-moon"></i>';
+        }
+        setChallenge(currentChallenge);
+    }
+    document.getElementById('nightBtn').onclick = function() {
+        nightMode = !nightMode;
+        localStorage.setItem('nightMode', nightMode);
+        updateNightMode();
+    };
+    document.getElementById('btnPython').onclick = () => setChallenge('python');
+    document.getElementById('btnDrawing').onclick = () => setChallenge('drawing');
+    function getDoneDays() {
+        return JSON.parse(localStorage.getItem('doneDays_' + currentChallenge) || '[]');
+    }
+    function setDoneDays(arr) {
+        localStorage.setItem('doneDays_' + currentChallenge, JSON.stringify(arr));
+    }
+    function renderCalendar() {
+        const calendar = document.getElementById('calendar');
+        calendar.innerHTML = '';
+        let doneDays = getDoneDays();
+        const todayIdx = getTodayIndex();
+        for(let i=1; i<=100; i++) {
+            const day = document.createElement('div');
+            day.className = 'day' + (doneDays.includes(i) ? ' completed' : '') + (i === todayIdx ? ' today' : '');
+            day.textContent = i;
+            day.onclick = function() {
+                if(day.classList.contains('completed')) {
+                    doneDays = doneDays.filter(d => d !== i);
+                } else {
+                    if (!doneDays.includes(i)) {
+                        doneDays.push(i);
+                        document.getElementById('doneSound').currentTime = 0;
+                        document.getElementById('doneSound').play();
+                    }
+                }
+                setDoneDays(doneDays);
+                renderCalendar();
+                updateProgress();
+                checkCongrats();
+            };
+            calendar.appendChild(day);
+        }
+    }
+    function getTodayIndex() {
+        let startDate = localStorage.getItem('challengeStart_' + currentChallenge);
+        if (!startDate) {
+            startDate = new Date().toISOString().slice(0,10);
+            localStorage.setItem('challengeStart_' + currentChallenge, startDate);
+        }
+        const start = new Date(startDate);
+        const today = new Date();
+        const diff = Math.floor((today - start) / (1000 * 60 * 60 * 24));
+        return Math.min(diff + 1, 100);
+    }
+    function updateProgress() {
+        const doneDays = getDoneDays();
+        const percent = Math.round((doneDays.length / 100) * 100);
+        document.getElementById('progressBar').style.width = percent + '%';
+        document.getElementById('progressText').textContent = `${doneDays.length}/100 يوم مكتمل`;
+        document.getElementById('daysLeft').textContent = `متبقي ${100 - doneDays.length} يوم`;
+    }
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3400);
+    }
+    function shareSite() {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                showToast("تم نسخ رابط الموقع! شاركه مع أصدقائك 🚀");
+            }).catch(() => {
+                prompt("انسخ الرابط وشاركه:", window.location.href);
+            });
+        } else {
+            prompt("انسخ الرابط وشاركه:", window.location.href);
+        }
+    }
+    function launchConfetti() {
+      for(let i=0;i<24;i++) {
+        const conf = document.createElement('div');
+        conf.className = 'confetti';
+        conf.style.background = `hsl(${Math.random()*360},90%,60%)`;
+        conf.style.left = `${Math.random()*90+5}vw`;
+        conf.style.animationDelay = `${Math.random()*0.7}s`;
+        conf.style.width = conf.style.height = `${Math.random()*10+8}px`;
+        document.body.appendChild(conf);
+        setTimeout(()=>conf.remove(), 2400);
+      }
+    }
+    function checkCongrats() {
+        const doneDays = getDoneDays();
+        if (doneDays.length === 100) {
+            document.getElementById('congratsPopup').style.display = 'flex';
+            launchConfetti();
+            setTimeout(showNewHabitPopup, 3500);
+        }
+    }
+    function closeCongrats() {
+        document.getElementById('congratsPopup').style.display = 'none';
+    }
+    function showNewHabitPopup() {
+      document.getElementById('newHabitPopup').style.display = 'flex';
+    }
+    function closeNewHabitPopup() {
+      document.getElementById('newHabitPopup').style.display = 'none';
+    }
+    function showStatsPopup() {
+      const doneDays = getDoneDays();
+      let streak = 0, maxStreak = 0, prev = 0;
+      doneDays.sort((a,b)=>a-b).forEach(d=>{
+        if(d === prev+1) streak++; else streak=1;
+        if(streak > maxStreak) maxStreak = streak;
+        prev = d;
+      });
+      document.getElementById('statsContent').innerHTML = `
+        <div style="font-size:1.2em;margin-bottom:10px;">
+          <b>الأيام المنجزة:</b> ${doneDays.length} / 100
+        </div>
+        <div style="font-size:1.1em;margin-bottom:10px;">
+          <b>أفضل سلسلة متواصلة:</b> ${maxStreak} يوم
+        </div>
+      `;
+      document.getElementById('statsPopup').style.display = 'flex';
+    }
+    function closeStatsPopup() {
+      document.getElementById('statsPopup').style.display = 'none';
+    }
+    // رسالة ترحيب أول مرة
+    if (!localStorage.getItem('firstVisitDone')) {
+        setTimeout(() => showToast('مرحباً بك في تحدي 100 يوم! 🚀'), 1200);
+        localStorage.setItem('firstVisitDone', '1');
+    }
+    updateNightMode();
+    setChallenge(currentChallenge);
+    // تميمة تحفيزية واقتباسات
+    const mascotQuotes = [
+      "كل يوم جديد فرصة جديدة! 🚀",
+      "لا يوجد مستحيل مع الاستمرار 👊",
+      "خطوة صغيرة اليوم = إنجاز كبير غداً.",
+      "تذكر: الفشل بداية النجاح! 💡",
+      "أنت أقوى مما تعتقد! 💪",
+      "استمتع بالرحلة، وليس فقط بالنتيجة.",
+      "تعلم شيئاً جديداً اليوم، ولو كان صغيراً.",
+      "النجاح عادة، ابدأها الآن.",
+      "كل تحدي هو فرصة لتكون أفضل.",
+      "أنت تصنع مستقبلك بيدك!",
+      "لا تقارن نفسك إلا بنفسك القديمة.",
+      "كل يوم تلتزم فيه، أنت تقترب من هدفك.",
+      "الاستمرارية أهم من الكمال.",
+      "حتى لو تعثرت، انهض وواصل.",
+      "كل إنجاز يبدأ بفكرة صغيرة.",
+      "أنت مصدر إلهام لمن حولك!",
+      "كل عادة عظيمة بدأت بخطوة بسيطة.",
+      "التغيير يبدأ من قرارك اليوم.",
+      "لا تنتظر الوقت المناسب، اصنعه بنفسك.",
+      "كل يوم جديد هو فرصة لبداية جديدة.",
+      "أنت بطل قصتك، لا تتوقف!",
+      "الطريق الطويل يبدأ بخطوة واحدة.",
+      "احتفل بتقدمك مهما كان صغيرًا.",
+      "كل محاولة تقربك من النجاح.",
+      "تذكر: أنت تستحق الأفضل دائمًا.",
+      "النجاح ليس صدفة، بل عادة.",
+      "كل يوم جديد هو فرصة لتكون أفضل.",
+      "لا تستسلم، فالأحلام تحتاج صبرًا.",
+      "أنت أقوى من أي عائق.",
+      "استمر، فالمثابرة تصنع الفارق.",
+      "كل تحدي هو فرصة للنمو.",
+      "اجعل اليوم أفضل من الأمس.",
+      "كل إنجاز يبدأ بالإيمان بنفسك.",
+      "لا يوجد طريق مختصر للنجاح، فقط الاستمرار.",
+      "أنت تصنع الفرق كل يوم.",
+      "كل عادة صغيرة تصنع مستقبلك الكبير.",
+      "استمتع بكل لحظة في رحلتك.",
+      "كل يوم هو صفحة جديدة في كتاب نجاحك.",
+      "أنت قادر على تحقيق المستحيل.",
+      "كل خطوة للأمام تستحق الاحتفال.",
+      "لا تخف من الفشل، فهو جزء من النجاح."
+    ];
+    function randomQuote() {
+      return mascotQuotes[Math.floor(Math.random() * mascotQuotes.length)];
+    }
+    function showMascotQuote() {
+      const speech = document.getElementById('mascotSpeech');
+      if (!speech) return;
+      speech.textContent = randomQuote();
+      speech.animate([
+        { opacity: 0, transform: 'scale(0.95) translateY(20px)' },
+        { opacity: 1, transform: 'scale(1.05) translateY(-4px)' },
+        { opacity: 1, transform: 'scale(1) translateY(0)' }
+      ], { duration: 700, fill: 'forwards' });
+      // حركة التميمة
+      const mascot = document.getElementById('mascotChar');
+      if (mascot) {
+        mascot.animate([
+          { transform: 'rotate(-10deg) scale(1.1)' },
+          { transform: 'rotate(10deg) scale(1.2)' },
+          { transform: 'rotate(0deg) scale(1)' }
+        ], { duration: 600, fill: 'forwards' });
+      }
+    }
+    // أول تحميل
+    showMascotQuote();
+    // عند الضغط على التميمة أو الفقاعة
+    document.getElementById('mascotBox').onclick = showMascotQuote;
+    // شريط الإنجاز التفاعلي
+    function updateCelebrateBar() {
+        const doneDays = getDoneDays();
+        const percent = Math.round((doneDays.length / 100) * 100);
+        const msg = document.getElementById('celebrateMsg');
+        const icons = document.getElementById('celebrateIcons');
+        let text = "ابدأ رحلتك الآن! 🚀";
+        let emoji = "✨";
+        if (percent >= 100) {
+            text = "إنجاز أسطوري! 💯";
+            emoji = "🏆🔥🏆";
+        } else if (percent >= 80) {
+            text = "قريب جدًا من القمة! 👑";
+            emoji = "🔥🔥";
+        } else if (percent >= 50) {
+            text = "منتصف الطريق! استمر! ⭐";
+            emoji = "⭐✨⭐";
+        } else if (percent >= 20) {
+            text = "انطلاقة رائعة! 👍";
+            emoji = "🚀✨";
+        }
+        msg.textContent = text;
+        icons.innerHTML = "";
+        for (let i = 0; i < emoji.length; i++) {
+            icons.innerHTML += `<span style="display:inline-block;animation:starPop 1.2s cubic-bezier(.68,-0.55,.27,1.55) infinite alternate;font-size:1.2em;margin:0 2px;">${emoji[i]}</span>`;
+        }
+        // لون الشريط حسب التحدي
+        const bar = document.getElementById('celebrateBar');
+        if (document.body.classList.contains('drawing')) {
+            bar.style.background = "linear-gradient(90deg,#fbbf24 0%,#f472b6 100%)";
+            bar.style.color = "#78350f";
+        } else {
+            bar.style.background = "linear-gradient(90deg,#312e81 0%,#1976d2 100%)";
+            bar.style.color = "#fff";
+        }
+    }
+    // حركة النجوم
+    const style = document.createElement('style');
+    style.innerHTML = `
+    @keyframes starPop {
+        0% { transform: scale(1) rotate(-10deg);}
+        100% { transform: scale(1.25) rotate(10deg);}
+    }`;
+    document.head.appendChild(style);
+    // استدعِها بعد كل تحديث تقدم
+    const oldUpdateProgress = updateProgress;
+    updateProgress = function() {
+        oldUpdateProgress();
+        updateCelebrateBar();
+    };
+    // أول تحميل
+    updateCelebrateBar();
+    </script>
+</body>
+</html>
